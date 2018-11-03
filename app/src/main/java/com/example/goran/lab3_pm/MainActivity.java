@@ -13,5 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent serviceIntent = new Intent(this, MyService.class);
         startService(serviceIntent);
+        //sprawdzenie zmian
     }
 }
