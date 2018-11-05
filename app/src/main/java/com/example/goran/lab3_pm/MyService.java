@@ -6,36 +6,57 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MyService extends Service {
     private Toast toast;
+
+    private Timer timer;
+    private TimerTask timerTask;
+    private class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            showToast("Your service is still working");
+        }
+    }
 
     private void showToast(String text) {
         toast.setText(text);
         toast.show();
     }
-    private void writeToLogs(String message) {
-        Log.d("HelloServices", message);
-    }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        writeToLogs("Called onCreate() method.");
+
         toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+        timer = new Timer();
 
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        writeToLogs("Called onStartCommand() methond");
+        clearTimerSchedule();
+        timerTask = new MyTimerTask();//uruchamiam na nowo timer po jego zresetowaniu
+        timer.scheduleAtFixedRate(timerTask, 4 * 1000, 4 * 1000);
         showToast("Your service has been started");
         return super.onStartCommand(intent, flags, startId);
 
     }
+    private void clearTimerSchedule() {
+        if(timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
+    }
+
+
 
     @Override
     public void onDestroy() {
-        writeToLogs("Called onDestroy() method");
+        clearTimerSchedule();
         super.onDestroy();
     }
 

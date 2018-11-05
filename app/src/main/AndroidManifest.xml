@@ -20,7 +20,14 @@
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:process=".MyService" />
+        <service
+            android:name=".MyService2"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>
